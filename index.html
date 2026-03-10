@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pete Watman</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --grey: #888;
+      --light-grey: #f4f4f4;
+      --rule: #e0e0e0;
+      --accent: #c8520a;
+      --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 48px;
+      height: 64px;
+      background: var(--white);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .nav-logo {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--black);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--grey);
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HERO */
+    #hero {
+      display: flex;
+      flex-direction: column;
+      padding: 0 48px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .hero-main {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 48px;
+      padding-top: 120px;
+    }
+
+    .hero-rotating-wrap {
+      height: 42px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards 0.2s;
+    }
+
+    .hero-rotating {
+      display: flex;
+      flex-direction: column;
+      animation: rotateWords 12s ease infinite;
+    }
+
+    .hero-rotating span {
+      display: block;
+      font-size: clamp(20px, 2.1vw, 24px);
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      height: 42px;
+      line-height: 42px;
+      flex-shrink: 0;
+    }
+
+    @keyframes rotateWords {
+      0%   { transform: translateY(0); }
+      22%  { transform: translateY(0); }
+      27%  { transform: translateY(-42px); }
+      49%  { transform: translateY(-42px); }
+      54%  { transform: translateY(-84px); }
+      76%  { transform: translateY(-84px); }
+      81%  { transform: translateY(-126px); }
+      99%  { transform: translateY(-126px); }
+      100% { transform: translateY(0); }
+    }
+
+    .hero-headline {
+      font-size: clamp(52px, 8.5vw, 120px);
+      font-weight: 700;
+      line-height: 0.92;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+    }
+
+    .hero-headline .line {
+      display: block;
+      overflow: hidden;
+    }
+
+    .hero-headline .line-inner {
+      display: block;
+      opacity: 0;
+      transform: translateY(100%);
+      animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .hero-headline .line:nth-child(1) .line-inner { animation-delay: 0.3s; }
+    .hero-headline .line:nth-child(2) .line-inner { animation-delay: 0.43s; }
+
+    .hero-headline .accent { color: var(--accent); }
+
+    /* TICKER */
+    .ticker-wrap {
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden;
+      padding: 14px 0;
+      white-space: nowrap;
+    }
+
+    .ticker {
+      display: inline-block;
+      animation: ticker 28s linear infinite;
+    }
+
+    .ticker span {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--grey);
+      padding: 0 28px;
+    }
+
+    .ticker span.sep { color: var(--accent); padding: 0; }
+
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 120px 48px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 80px;
+    }
+
+    .section-num {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .section-rule { flex: 1; height: 1px; background: var(--rule); }
+
+    /* ABOUT */
+    #about .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .about-text h2 {
+      font-size: clamp(32px, 4vw, 56px);
+      font-weight: 700;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .about-text h2 em {
+      font-style: normal;
+      color: transparent;
+      -webkit-text-stroke: 2px var(--black);
+    }
+
+    .about-text p {
+      font-size: 16px;
+      color: #444;
+      line-height: 1.8;
+      margin-bottom: 18px;
+    }
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .detail-item:first-child { border-top: 1px solid var(--rule); }
+
+    .detail-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 8px;
+    }
+
+    .detail-value { font-size: 15px; line-height: 1.5; }
+
+    /* CASE STUDIES */
+    .case-study { border-top: 1px solid var(--rule); }
+    .case-study:last-of-type { border-bottom: 1px solid var(--rule); }
+
+    .cs-header {
+      display: grid;
+      grid-template-columns: 64px 1fr auto;
+      align-items: center;
+      gap: 32px;
+      padding: 32px 0;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .cs-num {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--grey);
+    }
+
+    .cs-title {
+      font-size: clamp(20px, 2.5vw, 32px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .cs-header:hover .cs-title { color: var(--accent); }
+
+    .cs-type {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-top: 7px;
+    }
+
+    .cs-toggle {
+      width: 36px; height: 36px;
+      border: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .cs-header:hover .cs-toggle { background: var(--accent); border-color: var(--accent); }
+    .cs-toggle svg { width: 14px; height: 14px; stroke: var(--black); transition: transform 0.35s ease, stroke 0.2s; }
+    .cs-header:hover .cs-toggle svg { stroke: var(--white); }
+    .case-study.open .cs-toggle svg { transform: rotate(45deg); }
+
+    .cs-body {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.45s ease;
+    }
+    .case-study.open .cs-body { grid-template-rows: 1fr; }
+    .cs-body-inner { overflow: hidden; }
+
+    .cs-content {
+      padding-bottom: 72px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .cs-images { display: flex; flex-direction: column; gap: 3px; }
+
+    .cs-images img {
+      width: 100%; display: block; height: auto;
+      background: var(--light-grey);
+    }
+
+    .video-wrap {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0; overflow: hidden;
+    }
+    .video-wrap iframe {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%; border: 0;
+    }
+
+    .cs-details { display: flex; flex-direction: column; gap: 40px; padding-top: 4px; }
+
+    .cs-detail-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .cs-detail-text { font-size: 15px; line-height: 1.8; color: #333; }
+    .cs-detail-text em { font-style: italic; color: var(--black); font-weight: 600; }
+
+    /* External */
+    .cs-external a { display: block; text-decoration: none; color: inherit; }
+    .cs-toggle-ext {
+      width: 36px; height: 36px;
+      border: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .cs-external:hover .cs-title { color: var(--accent); }
+    .cs-external:hover .cs-toggle-ext { background: var(--accent); border-color: var(--accent); }
+    .cs-external:hover .cs-toggle-ext svg { stroke: var(--white); }
+    .cs-toggle-ext svg { stroke: var(--black); width: 14px; height: 14px; }
+
+    /* Client list */
+    .client-list { margin-top: 64px; padding-top: 48px; border-top: 1px solid var(--rule); }
+    .client-list-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--grey); margin-bottom: 16px;
+    }
+    .client-list p { font-size: 13px; color: var(--grey); line-height: 2; }
+
+    /* CONTACT */
+    #contact { min-height: 60vh; display: flex; flex-direction: column; justify-content: center; }
+    .contact-inner { max-width: 800px; }
+
+    .contact-inner h2 {
+      font-size: clamp(40px, 6vw, 88px);
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+    }
+    .contact-inner h2 em { font-style: normal; color: var(--accent); }
+
+    .contact-inner p {
+      font-size: 16px; color: #555;
+      line-height: 1.7; margin-bottom: 48px; max-width: 440px;
+    }
+
+    .contact-links { display: flex; flex-direction: column; gap: 16px; }
+
+    .contact-link {
+      display: inline-flex; align-items: center; gap: 14px;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      text-decoration: none; color: var(--black);
+      border-bottom: 2px solid var(--black);
+      padding-bottom: 6px; width: fit-content;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .contact-link:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* FOOTER */
+    footer {
+      padding: 28px 48px;
+      border-top: 1px solid var(--rule);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    footer p { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); }
+
+    /* KEYFRAMES */
+    @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .nav-links { gap: 20px; }
+      #hero { padding: 0 24px; }
+      section { padding: 80px 24px; }
+      #about .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .cs-header { grid-template-columns: 40px 1fr auto; gap: 16px; padding: 24px 0; }
+      .cs-content { grid-template-columns: 1fr; gap: 40px; }
+      footer { padding: 24px; flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#hero" class="nav-logo">Pete Watman</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-main">
+      <div class="hero-rotating-wrap">
+        <div class="hero-rotating">
+          <span>Creative Director</span>
+          <span>Brand Namer</span>
+          <span>Copywriter</span>
+          <span>Verbal Identity Specialist</span>
+          <span>Creative Director</span>
+        </div>
+      </div>
+      <h1 class="hero-headline">
+        <span class="line"><span class="line-inner">I think &amp; write for brands.</span></span>
+        <span class="line"><span class="line-inner accent">Good things happen.</span></span>
+      </h1>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span>Verbal identity</span><span class="sep">·</span>
+      <span>Brand voice</span><span class="sep">·</span>
+      <span>Naming</span><span class="sep">·</span>
+      <span>Copywriting</span><span class="sep">·</span>
+      <span>Campaigns</span><span class="sep">·</span>
+      <span>Creative strategy</span><span class="sep">·</span>
+      <span>AI integration</span><span class="sep">·</span>
+      <span>Verbal identity</span><span class="sep">·</span>
+      <span>Brand voice</span><span class="sep">·</span>
+      <span>Naming</span><span class="sep">·</span>
+      <span>Copywriting</span><span class="sep">·</span>
+      <span>Campaigns</span><span class="sep">·</span>
+      <span>Creative strategy</span><span class="sep">·</span>
+      <span>AI integration</span><span class="sep">·</span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-header">
+      <span class="section-num">00</span>
+      <span class="section-title">About</span>
+      <span class="section-rule"></span>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <h2>Clarity where<br><em>there's noise.</em></h2>
+        <p>I help brands engage busy people. Often the very people who work for them. Whether it's building a brand from scratch, a brand story that needs sharpening, or a creative ad campaign across any media, I bring clarity where there's noise.</p>
+        <p>My creative experience covers advertising, branding and communications across every major category and media.</p>
+        <p>I've been creative director for global brands, joined the board of a multinational advertising agency (Lowe Zürich) and worked as a creative director and copywriter in Australia, the UK, Switzerland, Vietnam, Singapore, Thailand and New Zealand.</p>
+        <p>Want to find the voice to best express your brand narrative? Need to translate complex messages into simple language? Call me.</p>
+        <p>Rethinking your verbal identity? I'll create the guidelines you need and train your people and agencies to implement them.</p>
+        <p>Naming a new brand? I christened Aware Super, Envoy English, Squeaky Gate Olive Oil, Mercha and many others.</p>
+      </div>
+      <div class="about-details">
+        <div class="detail-item">
+          <span class="detail-label">Discipline</span>
+          <span class="detail-value">Branding &amp; Creative Direction.</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Skills</span>
+          <span class="detail-value">Verbal identity, brand voice, naming, copywriting, campaigns, creative strategy and AI integration.</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Based</span>
+          <span class="detail-value">Available worldwide.</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Open to</span>
+          <span class="detail-value">Collaborations, consulting and the right permanent creative leadership role.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">Selected Work</span>
+      <span class="section-rule"></span>
+    </div>
+
+    <!-- 01 University of Hull -->
+    <div class="case-study">
+      <div class="cs-header" onclick="toggleCS(this)">
+        <span class="cs-num">01</span>
+        <div>
+          <div class="cs-title">University of Hull</div>
+          <div class="cs-type">Verbal Identity &amp; Advertising Launch Campaign</div>
+        </div>
+        <div class="cs-toggle">
+          <svg viewBox="0 0 14 14" fill="none" stroke-width="1.8"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+        </div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-body-inner">
+          <div class="cs-content">
+            <div class="cs-images">
+              <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/StdFS28SyNg" allowfullscreen loading="lazy"></iframe>
+              </div>
+              <img src="images/hull-1.jpg" alt="University of Hull – Same old unsame since 1927">
+              <img src="images/hull-2.jpg" alt="Choose unsame billboard">
+              <img src="images/hull-3.jpg" alt="Campus building banners">
+              <img src="images/hull-4.jpg" alt="Why not play? campaign posters">
+            </div>
+            <div class="cs-details">
+              <div>
+                <div class="cs-detail-label">The challenge</div>
+                <div class="cs-detail-text">Hull University was approaching its centenary in difficult times. Brexit had hit higher education hard. The city's maritime glory was history. The university had narrowed to a 'hyperlocal' institution – recruiting almost exclusively from its own postcode. It needed a new story, and a new way of telling it.</div>
+              </div>
+              <div>
+                <div class="cs-detail-label">What I did</div>
+                <div class="cs-detail-text">Working with long-term collaborators PUSH Collective, I led the evolution of Hull's brand voice and launch campaign in video, digital and OOH. I developed a verbal identity built on Hull's outsider spirit and contrarian character – the "voice of irreverence" – and coined a new word to anchor it: <em>unsame</em>. A word that didn't exist, for a university that refused to be what everyone expected. Then I trained internal writers and external agencies how to implement this new brand voice across all media.</div>
+              </div>
+              <div>
+                <div class="cs-detail-label">The outcome</div>
+                <div class="cs-detail-text">A new brand voice and campaign with genuine cultural traction. <em>Same old unsame since 1927</em> – built around a single invented word that said everything about what Hull is, and who it's for.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 Aware Super -->
+    <div class="case-study">
+      <div class="cs-header" onclick="toggleCS(this)">
+        <span class="cs-num">02</span>
+        <div>
+          <div class="cs-title">Aware Super</div>
+          <div class="cs-type">Renaming, Rebranding &amp; Brand Voice</div>
+        </div>
+        <div class="cs-toggle">
+          <svg viewBox="0 0 14 14" fill="none" stroke-width="1.8"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+        </div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-body-inner">
+          <div class="cs-content">
+            <div class="cs-images">
+              <img src="images/aware-4.jpg" alt="Aware Super logo">
+              <img src="images/aware-2.jpg" alt="Aware Super campaign ads">
+              <img src="images/aware-1.jpg" alt="Aware Super – Feel great about your investments">
+              <img src="images/aware-3.jpg" alt="Aware Super brand voice guidelines">
+            </div>
+            <div class="cs-details">
+              <div>
+                <div class="cs-detail-label">The challenge</div>
+                <div class="cs-detail-text">Australia's third largest super fund had grown through acquisition. They absorbed multiple industry funds under the First State Super umbrella including $163.8 billion in assets, 1.19 million members, and a brand that no longer reflected who they'd become. They needed a new name and brand that could unite diverse cultures and communities under one clear identity.</div>
+              </div>
+              <div>
+                <div class="cs-detail-label">What I did</div>
+                <div class="cs-detail-text">I renamed the fund <em>Aware Super</em> – a name that captures exactly what sets them apart: a commitment to responsible, socially conscious investing that delivers financial returns and positive social outcomes. Together with my design partner we created a new visual identity. I then built the full verbal identity and brand voice guidelines to carry that thinking into every word they publish.</div>
+              </div>
+              <div>
+                <div class="cs-detail-label">The outcome</div>
+                <div class="cs-detail-text">A new name for how they've always been. Aware Super launched with a unified brand platform and campaign – <em>You profit. Everyone gains.</em> This spanned advertising, member communications, and comprehensive brand guidelines for their internal teams and agencies.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 Squeaky Gate -->
+    <div class="case-study">
+      <div class="cs-header" onclick="toggleCS(this)">
+        <span class="cs-num">03</span>
+        <div>
+          <div class="cs-title">Squeaky Gate</div>
+          <div class="cs-type">Naming</div>
+        </div>
+        <div class="cs-toggle">
+          <svg viewBox="0 0 14 14" fill="none" stroke-width="1.8"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+        </div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-body-inner">
+          <div class="cs-content">
+            <div class="cs-images">
+              <img src="images/squeakygate-2.jpg" alt="Squeaky Gate olive oil bottles on dirt road">
+              <img src="images/squeakygate-1.jpg" alt="Squeaky Gate vinegar range">
+              <img src="images/squeakygate-3.jpg" alt="Squeaky Gate – The way it should be">
+            </div>
+            <div class="cs-details">
+              <div>
+                <div class="cs-detail-label">The challenge</div>
+                <div class="cs-detail-text">Conga Foods saw a gap in the market for a premium Australian olive oil brand – one that would resonate with supermarket shoppers and feel genuinely rooted in the land it came from. They needed a name that could do all of that without trying too hard.</div>
+              </div>
+              <div>
+                <div class="cs-detail-label">What I did</div>
+                <div class="cs-detail-text">I named it <em>Squeaky Gate</em>. The reasoning was simple: there's a squeaky gate on every farm I've ever been to. It's the most Australian thing in the world – familiar, honest, a little rough around the edges. Exactly right for an oil that follows the harvest around the country.</div>
+              </div>
+              <div>
+                <div class="cs-detail-label">The outcome</div>
+                <div class="cs-detail-text">A decade on, Squeaky Gate is selling strongly in Coles, Woolworths, IGA and independents across Australia. The name proved so durable that the brand has since expanded into a full range of balsamic vinegars – still flying the same flag.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 Dappa -->
+    <div class="case-study">
+      <div class="cs-header" onclick="toggleCS(this)">
+        <span class="cs-num">04</span>
+        <div>
+          <div class="cs-title">Dappa</div>
+          <div class="cs-type">Naming &amp; Brand Identity</div>
+        </div>
+        <div class="cs-toggle">
+          <svg viewBox="0 0 14 14" fill="none" stroke-width="1.8"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+        </div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-body-inner">
+          <div class="cs-content">
+            <div class="cs-images">
+              <img src="images/dappa-2.jpg" alt="Dappa – Express your most authentic self">
+              <img src="images/dappa-1.jpg" alt="Dappa – Future of Fashion campaign">
+            </div>
+            <div class="cs-details">
+              <div>
+                <div class="cs-detail-label">The challenge</div>
+                <div class="cs-detail-text">An AI-powered personal styling app needed a name – and an identity – that could hold its own in a crowded, fast-moving market. It had to feel smart, accessible, and fashion-credible all at once. Not easy.</div>
+              </div>
+              <div>
+                <div class="cs-detail-label">What I did</div>
+                <div class="cs-detail-text">I named the brand <em>Dappa</em> – a word that does two things at once. It nods to looking dapper, and it contains the word 'app'. The best names introduce the business. I then developed the verbal identity around it: a brand voice built on confidence, self-expression, and the idea that owning your look can change your world.</div>
+              </div>
+              <div>
+                <div class="cs-detail-label">The outcome</div>
+                <div class="cs-detail-text">A brand name with genuine memorability and a proposition to match: <em>What do you call your daily style muse?</em> Say hello to Dappa – the AI stylist in the palm of your hand.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 Mercha -->
+    <div class="case-study">
+      <div class="cs-header" onclick="toggleCS(this)">
+        <span class="cs-num">05</span>
+        <div>
+          <div class="cs-title">Mercha</div>
+          <div class="cs-type">Naming, Brand Identity &amp; Messaging</div>
+        </div>
+        <div class="cs-toggle">
+          <svg viewBox="0 0 14 14" fill="none" stroke-width="1.8"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+        </div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-body-inner">
+          <div class="cs-content">
+            <div class="cs-images">
+              <img src="images/mercha-1.jpg" alt="Mercha – 69% of employees stat">
+              <img src="images/mercha-2.jpg" alt="Mercha branded merchandise range">
+              <img src="images/mercha-3.jpg" alt="Mercha website">
+            </div>
+            <div class="cs-details">
+              <div>
+                <div class="cs-detail-label">The challenge</div>
+                <div class="cs-detail-text">The promotional merchandise industry is worth A$127 billion and deeply fragmented – slow, opaque, and full of low-quality product that ends up in landfill. Mercha's founders had a better model: an 'Easy As' online experience delivering genuinely good merch, fast. But to disrupt the category, they first needed to exist – name, brand, messaging, the lot.</div>
+              </div>
+              <div>
+                <div class="cs-detail-label">What I did</div>
+                <div class="cs-detail-text">I named the business <em>Mercha</em> – a name that does what it says on the pack. It's immediately clear, highly searchable, and built for the digital-first world the founders were creating. I then developed the full brand identity, messaging framework, and communications platform, including the brand promise: <em>Cool merch people will wear out, not throw out.</em></div>
+              </div>
+              <div>
+                <div class="cs-detail-label">The outcome</div>
+                <div class="cs-detail-text">A complete brand from the ground up – name, voice, and positioning – built to take on a $127B industry. Design. Order. Delight.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06 Envoy English -->
+    <div class="case-study">
+      <div class="cs-header" onclick="toggleCS(this)">
+        <span class="cs-num">06</span>
+        <div>
+          <div class="cs-title">Envoy English</div>
+          <div class="cs-type">Naming &amp; Verbal Identity</div>
+        </div>
+        <div class="cs-toggle">
+          <svg viewBox="0 0 14 14" fill="none" stroke-width="1.8"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+        </div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-body-inner">
+          <div class="cs-content">
+            <div class="cs-images">
+              <img src="images/envoy-1.jpg" alt="Envoy English – Guide your students' English voyage">
+              <img src="images/envoy-2.jpg" alt="Envoy English campaign materials">
+              <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/6SkNfJms1qQ" allowfullscreen loading="lazy"></iframe>
+              </div>
+            </div>
+            <div class="cs-details">
+              <div>
+                <div class="cs-detail-label">The challenge</div>
+                <div class="cs-detail-text">IDP Education – one of the world's largest English language testing organisations – had built a new AI-powered English test from scratch. It needed a name, a voice, and an identity that could stand on its own in a competitive global market. The brief: something that captured both the precision of testing and the human journey of learning a language.</div>
+              </div>
+              <div>
+                <div class="cs-detail-label">What I did</div>
+                <div class="cs-detail-text">Working with PUSH Collective, I named the test <em>Envoy</em> – a word that speaks to guidance, progress, and the idea of accompanying students wherever they are on their English voyage. I then built the full verbal identity: brand voice guidelines that gave Envoy a distinct, human tone in a category that tends toward the clinical.</div>
+              </div>
+              <div>
+                <div class="cs-detail-label">The outcome</div>
+                <div class="cs-detail-text">A name and voice for an AI-powered test that feels genuinely human. <em>Test what matters. Measure what counts.</em> Envoy English launched with a clear positioning, a coherent brand world, and a platform built to scale globally.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 07 Western Sydney University -->
+    <div class="case-study">
+      <div class="cs-header" onclick="toggleCS(this)">
+        <span class="cs-num">07</span>
+        <div>
+          <div class="cs-title">Western Sydney University</div>
+          <div class="cs-type">Campaign &amp; Student Recruitment</div>
+        </div>
+        <div class="cs-toggle">
+          <svg viewBox="0 0 14 14" fill="none" stroke-width="1.8"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+        </div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-body-inner">
+          <div class="cs-content">
+            <div class="cs-images">
+              <img src="images/wsu-1.jpg" alt="Western Sydney University Indonesia campus">
+              <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/h6pte25-VeA" allowfullscreen loading="lazy"></iframe>
+              </div>
+              <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/PoMHYWnr5RQ" allowfullscreen loading="lazy"></iframe>
+              </div>
+            </div>
+            <div class="cs-details">
+              <div>
+                <div class="cs-detail-label">The challenge</div>
+                <div class="cs-detail-text">Western Sydney University had bold ambitions – launching a brand new campus in Surabaya, Indonesia, and recruiting students from across Southeast Asia. A world-class Australian university entering a new market, with no local brand recognition and everything to prove.</div>
+              </div>
+              <div>
+                <div class="cs-detail-label">What I did</div>
+                <div class="cs-detail-text">I led an 18-month launch program, building a small team and running activations across digital media throughout Southeast Asia. Recruitment and awareness campaigns spanned TikTok, Meta, YouTube and conventional media including OOH and direct mail – all built around a single rallying idea: <em>Find your future.</em></div>
+              </div>
+              <div>
+                <div class="cs-detail-label">The outcome</div>
+                <div class="cs-detail-text">The campaign exceeded every metric of success – driving awareness of the WSU brand, the new Surabaya campus, and delivering strong student recruitment results across the region.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 08 Pure Advertising -->
+    <div class="case-study cs-external">
+      <a href="https://bloodcommunication.carbonmade.com/" target="_blank" rel="noopener">
+        <div class="cs-header">
+          <span class="cs-num">08</span>
+          <div>
+            <div class="cs-title">Pure Advertising</div>
+            <div class="cs-type">External portfolio →</div>
+          </div>
+          <div class="cs-toggle-ext">
+            <svg viewBox="0 0 14 14" fill="none" stroke-width="1.8"><line x1="1" y1="7" x2="13" y2="7"/><line x1="9" y1="3" x2="13" y2="7"/><line x1="9" y1="11" x2="13" y2="7"/></svg>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Client list -->
+    <div class="client-list">
+      <div class="client-list-label">Brands I've worked with</div>
+      <p>Telstra · CBA · Credit Suisse · Fleetcard · Challenger Investment Management · Orange · AGSM · EML Payments · Pfizer · KIA · Toyota · UBS · EG Funds · University of Sydney · Unilever · IDP Education · ACU · Stockspot · DTCC · Teachers Mutual Bank · SIAA · UNSW · IBM · Microsoft · Conga Foods · Aware Super · University of Hull · KIT Money App for Kids · Kotex · Chris' Foods · Princess Yachts · Jobs Australia · Swazi Outdoors · BUCKN'BASS and many others.</p>
+    </div>
+
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">Contact</span>
+      <span class="section-rule"></span>
+    </div>
+    <div class="contact-inner">
+      <h2>Let's make<br><em>something good.</em></h2>
+      <p>Got a project in mind? I'd love to hear about it. Drop me a line and let's talk.</p>
+      <div class="contact-links">
+        <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#112;&#101;&#116;&#101;&#64;&#98;&#108;&#111;&#111;&#100;&#99;&#111;&#109;&#109;&#117;&#110;&#105;&#99;&#97;&#116;&#105;&#111;&#110;&#46;&#99;&#111;&#109;" class="contact-link">&#112;&#101;&#116;&#101;&#64;&#98;&#108;&#111;&#111;&#100;&#99;&#111;&#109;&#109;&#117;&#110;&#105;&#99;&#97;&#116;&#105;&#111;&#110;&#46;&#99;&#111;&#109; &#8594;</a>
+        <a href="tel:+61400436480" class="contact-link">+61 0400 436 480 →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Pete Watman</p>
+    <p>petewatman.com</p>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    function toggleCS(header) {
+      const cs = 

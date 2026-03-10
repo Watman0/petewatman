@@ -252,8 +252,27 @@
     .detail-value { font-size: 15px; line-height: 1.5; }
 
     /* CASE STUDIES */
-    .case-study { border-top: 1px solid var(--rule); }
-    .case-study:last-of-type { border-bottom: 1px solid var(--rule); }
+/* ACCORDION */
+    details.case-study { border-top: 1px solid var(--rule); }
+    details.case-study:last-of-type { border-bottom: 1px solid var(--rule); }
+    details.case-study summary { list-style: none; }
+    details.case-study summary::-webkit-details-marker { display: none; }
+
+    details.case-study summary .cs-toggle {
+      width: 32px; height: 32px;
+      border: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+      flex-shrink: 0;
+    }
+    details.case-study summary:hover .cs-title { color: var(--accent); }
+    details.case-study summary:hover .cs-toggle { background: var(--accent); border-color: var(--accent); }
+    details.case-study summary:hover .cs-toggle svg { stroke: var(--white); }
+    details.case-study summary .cs-toggle svg { stroke: var(--black); width: 14px; height: 14px; transition: transform 0.3s, stroke 0.2s; }
+    details.case-study[open] summary .cs-toggle svg { transform: rotate(45deg); }
+    details.case-study[open] summary .cs-title { color: var(--accent); }
+
+    .cs-body-content { padding-bottom: 72px; }
 
     .cs-header {
       display: grid;
@@ -291,25 +310,8 @@
       margin-top: 7px;
     }
 
-    .cs-toggle {
-      width: 36px; height: 36px;
-      border: 1px solid var(--rule);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .cs-header:hover .cs-toggle { background: var(--accent); border-color: var(--accent); }
-    .cs-toggle svg { width: 14px; height: 14px; stroke: var(--black); transition: transform 0.35s ease, stroke 0.2s; }
-    .cs-header:hover .cs-toggle svg { stroke: var(--white); }
-    .case-study.open .cs-toggle svg { transform: rotate(45deg); }
 
-    .cs-body {
-      display: grid;
-      grid-template-rows: 0fr;
-      transition: grid-template-rows 0.45s ease;
-    }
-    .case-study.open .cs-body { grid-template-rows: 1fr; }
-    .cs-body-inner { overflow: hidden; }
+
 
     .cs-content {
       padding-bottom: 72px;
@@ -423,7 +425,7 @@
       #hero { padding: 0 24px; }
       section { padding: 80px 24px; }
       #about .about-grid { grid-template-columns: 1fr; gap: 48px; }
-      .cs-header { grid-template-columns: 40px 1fr auto; gap: 16px; padding: 24px 0; }
+      .cs-header { grid-template-columns: 40px 1fr; gap: 16px; padding: 24px 0; }
       .cs-content { grid-template-columns: 1fr; gap: 40px; }
       footer { padding: 24px; flex-direction: column; gap: 12px; }
     }
@@ -526,19 +528,17 @@
     </div>
 
     <!-- 01 University of Hull -->
-    <div class="case-study">
-      <div class="cs-header" onclick="toggleCS(this)">
+    <details class="case-study">
+      <summary class="cs-header">
         <span class="cs-num">01</span>
         <div>
           <div class="cs-title">University of Hull</div>
           <div class="cs-type">Verbal Identity &amp; Advertising Launch Campaign</div>
         </div>
-        <div class="cs-toggle">
-          <svg viewBox="0 0 14 14" fill="none" stroke-width="1.8"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
-        </div>
-      </div>
-      <div class="cs-body">
-        <div class="cs-body-inner">
+        <div class="cs-toggle"><svg viewBox="0 0 14 14" fill="none" stroke-width="1.5"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg></div>
+      </summary>
+      
+        
           <div class="cs-content">
             <div class="cs-images">
               <div class="video-wrap">
@@ -564,24 +564,20 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </details>
 
     <!-- 02 Aware Super -->
-    <div class="case-study">
-      <div class="cs-header" onclick="toggleCS(this)">
+    <details class="case-study">
+      <summary class="cs-header">
         <span class="cs-num">02</span>
         <div>
           <div class="cs-title">Aware Super</div>
           <div class="cs-type">Renaming, Rebranding &amp; Brand Voice</div>
         </div>
-        <div class="cs-toggle">
-          <svg viewBox="0 0 14 14" fill="none" stroke-width="1.8"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
-        </div>
-      </div>
-      <div class="cs-body">
-        <div class="cs-body-inner">
+        <div class="cs-toggle"><svg viewBox="0 0 14 14" fill="none" stroke-width="1.5"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg></div>
+      </summary>
+      
+        
           <div class="cs-content">
             <div class="cs-images">
               <img src="aware-4.jpg" alt="Aware Super logo">
@@ -604,24 +600,20 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </details>
 
     <!-- 03 Squeaky Gate -->
-    <div class="case-study">
-      <div class="cs-header" onclick="toggleCS(this)">
+    <details class="case-study">
+      <summary class="cs-header">
         <span class="cs-num">03</span>
         <div>
           <div class="cs-title">Squeaky Gate</div>
           <div class="cs-type">Naming</div>
         </div>
-        <div class="cs-toggle">
-          <svg viewBox="0 0 14 14" fill="none" stroke-width="1.8"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
-        </div>
-      </div>
-      <div class="cs-body">
-        <div class="cs-body-inner">
+        <div class="cs-toggle"><svg viewBox="0 0 14 14" fill="none" stroke-width="1.5"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg></div>
+      </summary>
+      
+        
           <div class="cs-content">
             <div class="cs-images">
               <img src="squeakygate-2.jpg" alt="Squeaky Gate olive oil bottles on dirt road">
@@ -643,24 +635,20 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </details>
 
     <!-- 04 Dappa -->
-    <div class="case-study">
-      <div class="cs-header" onclick="toggleCS(this)">
+    <details class="case-study">
+      <summary class="cs-header">
         <span class="cs-num">04</span>
         <div>
           <div class="cs-title">Dappa</div>
           <div class="cs-type">Naming &amp; Brand Identity</div>
         </div>
-        <div class="cs-toggle">
-          <svg viewBox="0 0 14 14" fill="none" stroke-width="1.8"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
-        </div>
-      </div>
-      <div class="cs-body">
-        <div class="cs-body-inner">
+        <div class="cs-toggle"><svg viewBox="0 0 14 14" fill="none" stroke-width="1.5"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg></div>
+      </summary>
+      
+        
           <div class="cs-content">
             <div class="cs-images">
               <img src="dappa-2.jpg" alt="Dappa – Express your most authentic self">
@@ -681,24 +669,20 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </details>
 
     <!-- 05 Mercha -->
-    <div class="case-study">
-      <div class="cs-header" onclick="toggleCS(this)">
+    <details class="case-study">
+      <summary class="cs-header">
         <span class="cs-num">05</span>
         <div>
           <div class="cs-title">Mercha</div>
           <div class="cs-type">Naming, Brand Identity &amp; Messaging</div>
         </div>
-        <div class="cs-toggle">
-          <svg viewBox="0 0 14 14" fill="none" stroke-width="1.8"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
-        </div>
-      </div>
-      <div class="cs-body">
-        <div class="cs-body-inner">
+        <div class="cs-toggle"><svg viewBox="0 0 14 14" fill="none" stroke-width="1.5"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg></div>
+      </summary>
+      
+        
           <div class="cs-content">
             <div class="cs-images">
               <img src="mercha-1.jpg" alt="Mercha – 69% of employees stat">
@@ -720,24 +704,20 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </details>
 
     <!-- 06 Envoy English -->
-    <div class="case-study">
-      <div class="cs-header" onclick="toggleCS(this)">
+    <details class="case-study">
+      <summary class="cs-header">
         <span class="cs-num">06</span>
         <div>
           <div class="cs-title">Envoy English</div>
           <div class="cs-type">Naming &amp; Verbal Identity</div>
         </div>
-        <div class="cs-toggle">
-          <svg viewBox="0 0 14 14" fill="none" stroke-width="1.8"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
-        </div>
-      </div>
-      <div class="cs-body">
-        <div class="cs-body-inner">
+        <div class="cs-toggle"><svg viewBox="0 0 14 14" fill="none" stroke-width="1.5"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg></div>
+      </summary>
+      
+        
           <div class="cs-content">
             <div class="cs-images">
               <img src="envoy-1.jpg" alt="Envoy English – Guide your students' English voyage">
@@ -761,24 +741,20 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </details>
 
     <!-- 07 Western Sydney University -->
-    <div class="case-study">
-      <div class="cs-header" onclick="toggleCS(this)">
+    <details class="case-study">
+      <summary class="cs-header">
         <span class="cs-num">07</span>
         <div>
           <div class="cs-title">Western Sydney University</div>
           <div class="cs-type">Campaign &amp; Student Recruitment</div>
         </div>
-        <div class="cs-toggle">
-          <svg viewBox="0 0 14 14" fill="none" stroke-width="1.8"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
-        </div>
-      </div>
-      <div class="cs-body">
-        <div class="cs-body-inner">
+        <div class="cs-toggle"><svg viewBox="0 0 14 14" fill="none" stroke-width="1.5"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg></div>
+      </summary>
+      
+        
           <div class="cs-content">
             <div class="cs-images">
               <img src="wsu-1.jpg" alt="Western Sydney University Indonesia campus">
@@ -804,9 +780,7 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </details>
 
     <!-- 08 Pure Advertising -->
     <div class="case-study cs-external">
@@ -855,5 +829,11 @@
   </footer>
 
   <script>
-    function toggleCS(header) {
-      const cs = 
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+  </script>
+
+</body>
+</html>
